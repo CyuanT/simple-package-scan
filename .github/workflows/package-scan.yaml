@@ -6,11 +6,13 @@ on:
   push:
 
 jobs:
-  Checkov:
+  SNYK:
     runs-on: ubuntu-latest
     # defaults:
     #   run:
     #     working-directory: terraform
+    env: 
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     steps:
     - name: Checkout
@@ -20,7 +22,11 @@ jobs:
       uses: snyk/actions/setup@master
 
     - name: Snyk monitor
+      run: snyk code test
+      working-directory: python
+      
+    - name: Snyk monitor
       run: snyk iac test
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       working-directory: terraform
